@@ -73,3 +73,44 @@ function multiplyBy2(input) {
 const myArray = [1, 2, 3];
 const result = copyArrayAndManipulate(myArray, multiplyBy2);
 ```
+
+### Who was this possible?
+
+Functions in javascript = first class objects
+They can co-exist with and can be treated like any other javascript object
+
+- Assigned to variables and properties of other ojects
+- Passed as arguments into functions
+- Returned as values from functions
+
+### Higher order functions
+
+Takes in a function or passes out a function.
+
+Just a term to describe these functions - any function that does it we call that - but there's nothing different about them inherently.
+
+### Callbacks and Higher Order Functions simplify our code and keep it DRY
+
+**Declarative readable code**: Map, filter, reduce - the most readable way to write code to work with data
+
+**Asynchronous JavaScript**: Callbacks are core aspect of async javaScript and are under-the-hood of promises, async/await
+
+### Introducing arrow functions - a shorthand way to save functions
+
+```javascript
+function add2(input) {
+  return input + 2;
+}
+
+const add2 = input => {
+  return input + 2;
+};
+
+const add2 = input => input + 2;
+```
+
+### Anonymous and arrow functions
+
+- Improve immediate legibility of the code
+- But at least for our purposes here they are 'syntactic sugar' - we'll see their full effects later
+- Understand how they're working under-the-hood is vital to avoid confusion
