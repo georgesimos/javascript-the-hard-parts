@@ -79,14 +79,11 @@ When a function is defined, it gets a bond to the surrounding Local Memory
 
 ### The ‘backpack’
 
-- We return incrementCounter’s code (function definition) out of outer into
-  global and give it a new name - myNewFunction
-- We maintain the bond to outer’s live local memory - it gets ‘returned out’
-  attached on the back of incrementCounter’s function definition.
+- We return incrementCounter’s code (function definition) out of outer into global and give it a new name - myNewFunction
+- We maintain the bond to outer’s live local memory - it gets ‘returned out’ attached on the back of incrementCounter’s function definition.
 - So outer’s local memory is now stored attached to myNewFunction - even
   though outer’s execution context is long gone
-- When we run myNewFunction in global, it will first look in its own local
-  memory first (as we’d expect), but then in myNewFunction’s ‘backpack’
+- When we run myNewFunction in global, it will first look in its own local memory first (as we’d expect), but then in myNewFunction’s ‘backpack’
 
 ### What can we call this ‘backpack’?
 
@@ -95,6 +92,35 @@ When a function is defined, it gets a bond to the surrounding Local Memory
 - ‘Backpack’
 - ‘Closure’
 
-The ‘backpack’ (or ‘closure’) of live data is attached incrementCounter (then to
-myNewFunction) through a hidden property known as [[scope]] which persists
-when the inner function is returned out
+The ‘backpack’ (or ‘closure’) of live data is attached incrementCounter (then to myNewFunction) through a hidden property known as [[scope]] which persists when the inner function is returned out
+
+### Let’s run outer again
+
+```javascript
+function outer() {
+  let counter = 0;
+  function incrementCounter() {
+    counter++;
+  }
+  return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction();
+myNewFunction();
+
+const anotherFunction = outer();
+anotherFunction();
+anotherFunction();
+```
+
+### Individual backpacks
+
+If we run 'outer' again and store the returned 'incrementCounter' function definition in 'anotherFunction', this new incrementCounter function was created in a new execution context and therefore has a brand new independent backpack
+
+### Closure gives our functions persistent memories and entirely new toolkit for writing professional code
+
+**Helper functions**: Everyday professional helper functions like ‘once’ and ‘memoize’
+**Iterators and generators**: Which use lexical scoping and closure to achieve the most contemporary patterns for handling data in JavaScript
+**Module pattern**: Preserve state for the life of an application without polluting the global namespace
+**Asynchronous JavaScript**: Callbacks and Promises rely on closure to persist state in an asynchronous environment
