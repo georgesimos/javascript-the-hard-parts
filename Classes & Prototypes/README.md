@@ -255,3 +255,66 @@ const newUser = Object.create(userFunctionStore);
 ...
 return newUser;
 ```
+
+### Solution 3 - Introducing the keyword that automates the hard work: new
+
+When we call the function that returns an object with new in front we automate 2 things
+
+1. Create a new user object
+2. Return the new user object
+
+```javascript
+const user1 = new userCreator("John", 9);
+```
+
+But now we need to adjust how we write the body of userCreator - how can we:
+
+- Refer to the auto-created object?
+- Know where to put our single copies of functions?
+
+> The new keyword automates a lot of our manual work
+
+> function userCreator(name, score) {
+> ~~const newUser = Object.create(functionStore);~~ > ~~newUser~~ this.name = name;
+> ~~newUser~~ this.score = score;
+> ~~return newUser;~~
+> };
+> ~~functionStore~~ userCreator.prototype // {};
+> ~~functionStore~~ userCreator.prototype.increment = function(){
+> this.score++;
+> }
+> const user1 = new userCreator("Will", 3); // Automates the hard work
+
+> Interlude - functions are both objects and functions
+
+```javascript
+function multiplyBy2(num) {
+  return num * 2;
+}
+multiplyBy2.stored = 5;
+multiplyBy2(3); // 6
+multiplyBy2.stored; // 5
+multiplyBy2.prototype; // {}
+```
+
+We could use the fact that all functions have a default property `prototype` on their object version, (itself an object) - to replace our `functionStore` object
+
+> The new keyword automates a lot of our manual work
+
+```javascript
+function userCreator(name, score){
+ this.name = name;
+ this.score = score;
+}
+userCreator.prototype.increment = function(){ this.score++; };
+userCreator.prototype.login = function(){ console.log("login"); };
+const user1 = new userCreator(“Eva”, 9)
+user1.increment()
+```
+
+**Benefits**: Faster to write. Often used in practice in professional code
+
+**Problems**:
+95% of developers have no idea how it works and therefore fail interviews
+
+We have to upper case first letter of the function so we know it requires ‘new’ to work!
