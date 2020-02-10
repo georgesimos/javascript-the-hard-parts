@@ -117,3 +117,141 @@ memory for all our data and functions. But our functions are just copies
 Is there a better way?
 
 **Benefits**: It's simple and easy to reason about!
+
+### Solution 2: Using the prototype chain
+
+Store the increment function in just one object and have the interpreter, if it doesn't find the function on user1, look up to that object to check if it's there
+
+Link user1 and functionStore so the interpreter, on not finding .increment, makes sure to check up in functionStore where it would find it
+
+Make the link with Object.create() technique
+
+```javascript
+function userCreator(name, score) {
+  const newUser = Object.create(userFunctionStore);
+  newUser.name = name;
+  newUser.score = score;
+  return newUser;
+}
+const userFunctionStore = {
+  increment: function() {
+    this.score++;
+  },
+  login: function() {
+    console.log("Logged in");
+  }
+};
+const user1 = userCreator("Will", 3);
+const user2 = userCreator("Tim", 5);
+user1.increment();
+```
+
+### What if we want to confirm our user1 has the property score
+
+> We can use the hasOwnProperty method -
+> but where is it?
+
+```javascript
+function userCreator(name, score) {
+  const newUser = Object.create(userFunctionStore);
+  newUser.name = name;
+  newUser.score = score;
+  return newUser;
+}
+const userFunctionStore = {
+  increment: function() {
+    this.score++;
+  },
+  login: function() {
+    console.log("Logged in");
+  }
+};
+const user1 = userCreator("Will", 3);
+const user2 = userCreator("Tim", 5);
+user1.hasOwnProperty("score");
+```
+
+We can use the hasOwnProperty method - but where is it? Is it on user1?
+
+All objects have a **proto** property by default which defaults to linking to a big object - Object.prototype full of (somewhat) useful functions
+
+We get access to it via userFunctionStore’s **proto** property - the chain
+
+> Declaring & calling a new function inside our ‘method’ increment
+
+```javascript
+function userCreator(name, score) {
+  const newUser = Object.create(userFunctionStore);
+  newUser.name = name;
+  newUser.score = score;
+  return newUser;
+}
+const userFunctionStore = {
+  increment: function() {
+    this.score++;
+  }
+};
+const user1 = userCreator("Will", 3);
+const user2 = userCreator("Tim", 5);
+user1.increment();
+```
+
+> Create and invoke a new function (add1) inside increment
+
+```javascript
+function userCreator(name, score) {
+  const newUser = Object.create(userFunctionStore);
+  newUser.name = name;
+  newUser.score = score;
+  return newUser;
+}
+const userFunctionStore = {
+  increment: function() {
+    function add1() {
+      this.score++;
+    }
+    add1();
+  }
+};
+const user1 = userCreator("Will", 3);
+const user2 = userCreator("Tim", 5);
+user1.increment();
+```
+
+What does **this** get auto-assigned to?
+
+> Arrow functions override the normal this rules
+
+```javascript
+function userCreator(name, score) {
+  const newUser = Object.create(userFunctionStore);
+  newUser.name = name;
+  newUser.score = score;
+  return newUser;
+}
+const userFunctionStore = {
+  increment: function() {
+    const add1 = () => {
+      this.score++;
+    };
+    add1();
+  }
+};
+const user1 = userCreator("Will", 3);
+const user2 = userCreator("Tim", 5);
+user1.increment();
+```
+
+Now our inner function gets its this set by where it was saved - it’s a ‘lexically scoped this
+
+**Problems**: No problems! It's beautiful. Maybe a little long-winded
+
+Write this every single time - but it's 6 words!
+
+**Benefits**: Super sophisticated but not standard
+
+```javascript
+const newUser = Object.create(userFunctionStore);
+...
+return newUser;
+```
