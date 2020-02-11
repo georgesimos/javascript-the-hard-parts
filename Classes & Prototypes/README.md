@@ -283,7 +283,8 @@ But now we need to adjust how we write the body of userCreator - how can we:
 > ~~functionStore~~ userCreator.prototype.increment = function(){
 > this.score++;
 > }
-> const user1 = new userCreator("Will", 3); // Automates the hard work
+> const user1 = new userCreator("John", 3); // Automates the hard work
+> const user2 = new userCreator("George, 10)
 
 > Interlude - functions are both objects and functions
 
