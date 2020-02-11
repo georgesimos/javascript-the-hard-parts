@@ -1,5 +1,7 @@
 ### Classes, Prototypes - Object Oriented JavaScript
 
+---
+
 - An enormously popular paradigm for structuring our complex code
 - Prototype chain - the feature behind-the-scenes that enables emulation of
   OOP but is a compelling tool in itself
@@ -52,7 +54,7 @@ How could I store my data and functionality together in one place?
 
 This is the principle of encapsulation - and it’s going to transform how we can ‘reason about’ our code
 
-```javascript
+```js
 const user1 = {
   name: "Will",
   score: 3,
@@ -69,7 +71,7 @@ Let's keep creating our objects. What alternative techniques do we have for crea
 
 Declare an empty object and add properties with dot notation
 
-```javascript
+```js
 const user2 = {}; //create an empty object
 //assign properties to that object
 user2.name = "Tim";
@@ -83,7 +85,7 @@ user2.increment = function() {
 
 Object.create is going to give us fine-grained control over our object later on
 
-```javascript
+```js
 const user3 = Object.create(null);
 user3.name = "Eva";
 user3.score = 9;
@@ -96,7 +98,7 @@ Our code is getting repetitive, we're breaking our DRY principle. And suppose we
 
 ### Solution 1. Generate objects using a function
 
-```javascript
+```js
 function userCreator(name, score) {
   const newUser = {};
   newUser.name = name;
@@ -126,7 +128,7 @@ Link user1 and functionStore so the interpreter, on not finding .increment, make
 
 Make the link with Object.create() technique
 
-```javascript
+```js
 function userCreator(name, score) {
   const newUser = Object.create(userFunctionStore);
   newUser.name = name;
@@ -151,7 +153,7 @@ user1.increment();
 > We can use the hasOwnProperty method -
 > but where is it?
 
-```javascript
+```js
 function userCreator(name, score) {
   const newUser = Object.create(userFunctionStore);
   newUser.name = name;
@@ -179,7 +181,7 @@ We get access to it via userFunctionStore’s **proto** property - the chain
 
 > Declaring & calling a new function inside our ‘method’ increment
 
-```javascript
+```js
 function userCreator(name, score) {
   const newUser = Object.create(userFunctionStore);
   newUser.name = name;
@@ -198,7 +200,7 @@ user1.increment();
 
 > Create and invoke a new function (add1) inside increment
 
-```javascript
+```js
 function userCreator(name, score) {
   const newUser = Object.create(userFunctionStore);
   newUser.name = name;
@@ -222,7 +224,7 @@ What does **this** get auto-assigned to?
 
 > Arrow functions override the normal this rules
 
-```javascript
+```js
 function userCreator(name, score) {
   const newUser = Object.create(userFunctionStore);
   newUser.name = name;
@@ -250,7 +252,7 @@ Write this every single time - but it's 6 words!
 
 **Benefits**: Super sophisticated but not standard
 
-```javascript
+```js
 const newUser = Object.create(userFunctionStore);
 ...
 return newUser;
@@ -263,7 +265,7 @@ When we call the function that returns an object with new in front we automate 2
 1. Create a new user object
 2. Return the new user object
 
-```javascript
+```js
 const user1 = new userCreator("John", 9);
 ```
 
@@ -288,7 +290,7 @@ But now we need to adjust how we write the body of userCreator - how can we:
 
 > Interlude - functions are both objects and functions
 
-```javascript
+```js
 function multiplyBy2(num) {
   return num * 2;
 }
@@ -302,7 +304,7 @@ We could use the fact that all functions have a default property `prototype` on 
 
 > The new keyword automates a lot of our manual work
 
-```javascript
+```js
 function userCreator(name, score){
  this.name = name;
  this.score = score;
@@ -319,3 +321,36 @@ user1.increment()
 95% of developers have no idea how it works and therefore fail interviews
 
 We have to upper case first letter of the function so we know it requires ‘new’ to work!
+
+### Solution 4: The class ‘syntactic sugar’
+
+We’re writing our shared methods separately from our object ‘constructor’ itself (off in the userCreator.prototype object)
+Other languages let us do this all in one place. ES2015 lets us do so too
+
+```js
+class UserCreator {
+  constructor(name, score) {
+    this.name = name;
+    this.score = score;
+  }
+  increment() {
+    this.score++;
+  }
+  login() {
+    console.log("login");
+  }
+}
+const user1 = new UserCreator("Eva", 9);
+user1.increment();
+```
+
+![Classes][classesimage]
+
+**Benefits**:
+Emerging as a new standard
+Feels more like style of other languages (e.g. Python)
+**Problems**:
+99% of developers have no idea how it works and therefore fail interviews
+But you will not be one of them!
+
+[classesimage]: Classes.png "Classes Image"
