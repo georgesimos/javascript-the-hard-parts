@@ -1,5 +1,7 @@
 ## Closure
 
+---
+
 - Closure is the most esoteric of JavaScript concepts
 - Enables powerful pro-level functions like ‘once’ and ‘memoize’
 - Many JavaScript design patterns including the module pattern use closure

@@ -1,5 +1,7 @@
 ### Callbacks & Higher Order Functions
 
+---
+
 - One of the most misunderstood concepts in JavaScript
 - Enables powerful pro-level functions like map, filter, reduce (a core aspect of functional programming)
 - Makes our code more declarative and readable

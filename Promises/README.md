@@ -1,5 +1,7 @@
 ### ES6+ Solution (Promises)
 
+---
+
 Using two-pronged ‘facade’ functions that both:
 
 - Initiate background web browser work and

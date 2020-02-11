@@ -1,5 +1,7 @@
 ## Javascript Principles
 
+---
+
 when javascript code runs, it:
 
 - Goes through the code line-by-line and runs/ 'executes each line - known as the **thread of execution**

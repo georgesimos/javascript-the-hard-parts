@@ -1,5 +1,7 @@
 ### Promises, Async & the Event Loop
 
+---
+
 - Promises - the most signficant ES6 feature
 - Asynchronicity - the feature that makes dynamic web applications possible
 - The event loop - JavaScript’s triage
